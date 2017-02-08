@@ -1,0 +1,10 @@
+# Specific files and folders
+_Binary/*D.exe
+_Binary/*D.cfg
+_Binary/01_Basics.cfg
+_Binary/01_BasicsD.cfg
+Z_DELETE/
+
+# Visual Studio specifics
+*.suo
+*.db
