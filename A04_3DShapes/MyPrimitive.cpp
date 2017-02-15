@@ -171,19 +171,36 @@ void MyPrimitive::GenerateTube(float a_fOuterRadius, float a_fInnerRadius, float
 	Release();
 	Init();
 
-	//Your code starts here
-	float fValue = 0.5f;
-	//3--2
-	//|  |
-	//0--1
-	vector3 point0(-fValue, -fValue, fValue); //0
-	vector3 point1(fValue, -fValue, fValue); //1
-	vector3 point2(fValue, fValue, fValue); //2
-	vector3 point3(-fValue, fValue, fValue); //3
+	float degree_step = 2 * PI / a_nSubdivisions;
+	float degrees = 0.0f;
 
-	AddQuad(point0, point1, point3, point2);
+	vector3 origin(0, 0, 0);
+	vector3 topPoint(0, 0, a_fHeight);
 
-	//Your code ends here
+	vector3 bottomLeft, bottomRight, topLeft, topRight;
+	vector3 bottomInnerLeft, bottomInnerRight, topInnerLeft, topInnerRight;
+	for (int i = 0; i < a_nSubdivisions; i++) {
+		bottomLeft = vector3(a_fOuterRadius * cos(degrees), a_fOuterRadius * sin(degrees), 0);
+		topLeft = vector3(a_fOuterRadius * cos(degrees), a_fOuterRadius * sin(degrees), a_fHeight);
+
+		bottomInnerLeft = vector3(a_fInnerRadius * cos(degrees), a_fInnerRadius * sin(degrees), 0);
+		topInnerLeft = vector3(a_fInnerRadius * cos(degrees), a_fInnerRadius * sin(degrees), a_fHeight);
+
+		degrees += degree_step;
+		
+		bottomRight = vector3(a_fOuterRadius * cos(degrees), a_fOuterRadius * sin(degrees), 0);
+		topRight = vector3(a_fOuterRadius * cos(degrees), a_fOuterRadius * sin(degrees), a_fHeight);
+
+		bottomInnerRight = vector3(a_fInnerRadius * cos(degrees), a_fInnerRadius * sin(degrees), 0);
+		topInnerRight = vector3(a_fInnerRadius * cos(degrees), a_fInnerRadius * sin(degrees), a_fHeight);
+		
+
+		AddQuad(bottomLeft, bottomInnerLeft, bottomRight, bottomInnerRight);
+		AddQuad(topLeft, topRight, topInnerLeft, topInnerRight);
+		AddQuad(bottomLeft, bottomRight, topLeft, topRight);
+		AddQuad(bottomInnerLeft, topInnerLeft, bottomInnerRight, topInnerRight);
+	}
+
 	CompileObject(a_v3Color);
 }
 void MyPrimitive::GenerateTorus(float a_fOuterRadius, float a_fInnerRadius, int a_nSubdivisionsA, int a_nSubdivisionsB, vector3 a_v3Color)
