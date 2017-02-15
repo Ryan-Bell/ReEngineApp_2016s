@@ -42,6 +42,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Other", "Other", "{30329165-8C18-46CB-A4F4-A05ADB2AE1DF}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "E05_Repository", "\\banner.main.ad.rit.edu\students\rjb1928\IGMProfile\Documents\ReEngineApp_2016s\E05_Repository\E05_Repository.vcxproj.vcxproj", "{220F4955-7912-407C-9D34-371529497778}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "E06_Transformations", "E06_Transformations\E06_Transformations.vcxproj", "{CFC5A13E-27EB-44AB-A562-CADF4D45A21C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,10 +82,12 @@ Global
 		{769F0154-10DA-4627-8772-CE84597ECDCE}.Debug|x86.Build.0 = Debug|Win32
 		{769F0154-10DA-4627-8772-CE84597ECDCE}.Release|x86.ActiveCfg = Release|Win32
 		{769F0154-10DA-4627-8772-CE84597ECDCE}.Release|x86.Build.0 = Release|Win32
+
 		{CFC5A13E-27EB-44AB-A562-CADF4D45A21C}.Debug|x86.ActiveCfg = Debug|Win32
 		{CFC5A13E-27EB-44AB-A562-CADF4D45A21C}.Debug|x86.Build.0 = Debug|Win32
 		{CFC5A13E-27EB-44AB-A562-CADF4D45A21C}.Release|x86.ActiveCfg = Release|Win32
 		{CFC5A13E-27EB-44AB-A562-CADF4D45A21C}.Release|x86.Build.0 = Release|Win32
+
 		{05BD95CA-C5F7-45E3-A252-EF522EAAA809}.Debug|x86.ActiveCfg = Debug|Win32
 		{05BD95CA-C5F7-45E3-A252-EF522EAAA809}.Debug|x86.Build.0 = Debug|Win32
 		{05BD95CA-C5F7-45E3-A252-EF522EAAA809}.Release|x86.ActiveCfg = Release|Win32
@@ -101,6 +104,7 @@ Global
 		{220F4955-7912-407C-9D34-371529497778}.Debug|x86.Build.0 = Debug|Win32
 		{220F4955-7912-407C-9D34-371529497778}.Release|x86.ActiveCfg = Release|Win32
 		{220F4955-7912-407C-9D34-371529497778}.Release|x86.Build.0 = Release|Win32
+
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
