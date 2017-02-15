@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{CFC5A13E-27EB-44AB-A562-CADF4D45A21C}</ProjectGuid>
+    <ProjectGuid>{450050F1-7901-465E-BA27-D04F42DABEED}</ProjectGuid>
     <RootNamespace>E06_Transformations</RootNamespace>
     <ProjectName>E06_Transformations</ProjectName>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
