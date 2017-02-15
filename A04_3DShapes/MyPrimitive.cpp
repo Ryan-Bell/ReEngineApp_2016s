@@ -1,4 +1,5 @@
 #include "MyPrimitive.h"
+
 MyPrimitive::MyPrimitive() { }
 MyPrimitive::MyPrimitive(const MyPrimitive& other) { }
 MyPrimitive& MyPrimitive::operator=(const MyPrimitive& other) { return *this; }
@@ -15,6 +16,14 @@ void MyPrimitive::CompileObject(vector3 a_v3Color)
 	CompileOpenGL3X();
 
 }
+
+void MyPrimitive::AddTri(vector3 a_vBottomLeft, vector3 a_vBottomRight, vector3 a_vTop)
+{
+	AddVertexPosition(a_vBottomLeft);
+	AddVertexPosition(a_vBottomRight);
+	AddVertexPosition(a_vTop);
+}
+
 //C--D
 //|\ |
 //| \|
@@ -22,14 +31,10 @@ void MyPrimitive::CompileObject(vector3 a_v3Color)
 //This will make the triang A->B->C and then the triang C->B->D
 void MyPrimitive::AddQuad(vector3 a_vBottomLeft, vector3 a_vBottomRight, vector3 a_vTopLeft, vector3 a_vTopRight)
 {
-	AddVertexPosition(a_vBottomLeft);
-	AddVertexPosition(a_vBottomRight);
-	AddVertexPosition(a_vTopLeft);
-
-	AddVertexPosition(a_vTopLeft);
-	AddVertexPosition(a_vBottomRight);
-	AddVertexPosition(a_vTopRight);
+	AddTri(a_vBottomLeft, a_vBottomRight, a_vTopLeft);
+	AddTri(a_vTopLeft, a_vBottomRight, a_vTopRight);
 }
+
 void MyPrimitive::GeneratePlane(float a_fSize, vector3 a_v3Color)
 {
 	if (a_fSize < 0.01f)

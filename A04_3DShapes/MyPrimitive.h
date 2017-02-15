@@ -107,6 +107,14 @@ private:
 	OUTPUT: ---
 	*/
 	void AddQuad(vector3 a_vBottomLeft, vector3 a_vBottomRight, vector3 a_vTopLeft, vector3 a_vTopRight);
+	
+	/* Adds a triangle to the list points in the buffer to be compiled*/
+	/*
+	USAGE:
+	ARGUMENTS:
+	OUTPUT: ---
+	*/
+	void AddTri(vector3 a_vBottomLeft, vector3 a_vBottomRight, vector3 a_vTop);
 };
 
 #endif //__MYPRIMITIVE_H_
