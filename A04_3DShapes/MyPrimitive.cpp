@@ -114,19 +114,21 @@ void MyPrimitive::GenerateCone(float a_fRadius, float a_fHeight, int a_nSubdivis
 	Release();
 	Init();
 
-	//Your code starts here
-	float fValue = 0.5f;
-	//3--2
-	//|  |
-	//0--1
-	vector3 point0(-fValue, -fValue, fValue); //0
-	vector3 point1(fValue, -fValue, fValue); //1
-	vector3 point2(fValue, fValue, fValue); //2
-	vector3 point3(-fValue, fValue, fValue); //3
+	float degree_step = 2 * PI / a_nSubdivisions;
+	float degrees = 0.0f;
 
-	AddQuad(point0, point1, point3, point2);
+	vector3 origin(0, 0, 0);
+	vector3 topPoint(0, 0, a_fHeight);
 
-	//Your code ends here
+	vector3 left, right;
+	for (int i = 0; i < a_nSubdivisions; i++) {
+		left = vector3(a_fRadius * cos(degrees), a_fRadius * sin(degrees), 0);
+		degrees += degree_step;
+		right = vector3(a_fRadius * cos(degrees), a_fRadius * sin(degrees), 0);
+		AddTri(left, right, topPoint);
+		AddTri(left, origin, right);
+	}
+
 	CompileObject(a_v3Color);
 }
 void MyPrimitive::GenerateCylinder(float a_fRadius, float a_fHeight, int a_nSubdivisions, vector3 a_v3Color)
@@ -139,19 +141,24 @@ void MyPrimitive::GenerateCylinder(float a_fRadius, float a_fHeight, int a_nSubd
 	Release();
 	Init();
 
-	//Your code starts here
-	float fValue = 0.5f;
-	//3--2
-	//|  |
-	//0--1
-	vector3 point0(-fValue, -fValue, fValue); //0
-	vector3 point1(fValue, -fValue, fValue); //1
-	vector3 point2(fValue, fValue, fValue); //2
-	vector3 point3(-fValue, fValue, fValue); //3
+	float degree_step = 2 * PI / a_nSubdivisions;
+	float degrees = 0.0f;
 
-	AddQuad(point0, point1, point3, point2);
+	vector3 origin(0, 0, 0);
+	vector3 topPoint(0, 0, a_fHeight);
 
-	//Your code ends here
+	vector3 bottomLeft, bottomRight, topLeft, topRight;
+	for (int i = 0; i < a_nSubdivisions; i++) {
+		bottomLeft = vector3(a_fRadius * cos(degrees), a_fRadius * sin(degrees), 0);
+		topLeft = vector3(a_fRadius * cos(degrees), a_fRadius * sin(degrees), a_fHeight);
+		degrees += degree_step;
+		bottomRight = vector3(a_fRadius * cos(degrees), a_fRadius * sin(degrees), 0);
+		topRight = vector3(a_fRadius * cos(degrees), a_fRadius * sin(degrees), a_fHeight);
+		AddTri(bottomLeft, origin, bottomRight);
+		AddTri(topLeft, topRight, topPoint);
+		AddQuad(bottomLeft, bottomRight, topLeft, topRight);
+	}
+		
 	CompileObject(a_v3Color);
 }
 void MyPrimitive::GenerateTube(float a_fOuterRadius, float a_fInnerRadius, float a_fHeight, int a_nSubdivisions, vector3 a_v3Color)
