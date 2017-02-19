@@ -131,7 +131,7 @@ private:
 	ARGUMENTS:
 	OUTPUT: ---
 	*/
-	std::vector<vector3> MyPrimitive::Smooth(vector3 point1, vector3 point2, vector3 point3);
+	std::vector<vector3> MyPrimitive::SubDivide(vector3 point1, vector3 point2, vector3 point3, int level = 1);
 };
 
 #endif //__MYPRIMITIVE_H_

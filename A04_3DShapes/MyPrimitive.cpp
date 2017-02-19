@@ -253,53 +253,59 @@ void MyPrimitive::GenerateSphere(float a_fRadius, int a_nSubdivisions, vector3 a
 
 void MyPrimitive::GenerateIcosphere(float a_fRadius, int a_nSubdivisions) {
 
+	//the points in a simple dodecahedron
 	vector3 top(0, 0, a_fRadius);
 	vector3 bottom(0, 0, -a_fRadius);
-	vector3 b1(-a_fRadius, -a_fRadius, 0);
-	vector3 b2(-a_fRadius, a_fRadius, 0);
-	vector3 b3(a_fRadius, a_fRadius, 0);
-	vector3 b4(a_fRadius, -a_fRadius, 0);
 
-	std::vector<vector3> points = Smooth(top, b1, b2);
-	for (int i = 0; i < points.size(); i+=3) {
+	float shortRadius = sqrt((a_fRadius * a_fRadius) / 2);
+	vector3 b1(-shortRadius, -shortRadius, 0);
+	vector3 b2(-shortRadius, shortRadius, 0);
+	vector3 b3(shortRadius, shortRadius, 0);
+	vector3 b4(shortRadius, -shortRadius, 0);
+	vector3 corners[] = {b1, b2, b3, b4};
+	
+	std::vector<vector3> points, newPoints;
+	for (int i = 0; i < 4; i++) {
+		newPoints = SubDivide(corners[i], top, corners[(i+1) % 4], a_nSubdivisions);
+		points.insert(points.end(), newPoints.begin(), newPoints.end());
+		newPoints = SubDivide(corners[i], corners[(i + 1) % 4], bottom, a_nSubdivisions);
+		points.insert(points.end(), newPoints.begin(), newPoints.end());
+	}
+	
+	for (int i = 0; i < points.size(); i++) {
+		points[i] = glm::normalize(points[i]);
+	}
+	for (int i = 0; i < points.size(); i += 3) {
 		AddTri(points[i], points[(i + 1) % points.size()], points[(i + 2) % points.size()]);
 	}
-	/*
-	AddTri(b1, top, b2);
-	AddTri(b2, top, b3);
-	AddTri(b3, top, b4);
-	AddTri(b4, top, b1);
-
-	AddTri(b1, b2, bottom);
-	AddTri(b2, b3, bottom);
-	AddTri(b3, b4, bottom);
-	AddTri(b4, b1, bottom);
-	*/
 }
 
-std::vector<vector3> MyPrimitive::Smooth(vector3 point1, vector3 point2, vector3 point3) {
-	vector3 mid1 = (point1 + point2) / 2.0f;
-	vector3 mid2 = (point2 + point3) / 2.0f;
-	vector3 mid3 = (point3 + point1) / 2.0f;
-
+std::vector<vector3> MyPrimitive::SubDivide(vector3 point1, vector3 point2, vector3 point3, int level) {
 	std::vector<vector3> points;
-
-	points.push_back(point1);
-	points.push_back(mid1);
-	points.push_back(mid3);
-
-	points.push_back(mid1);
-	points.push_back(point2);
-	points.push_back(mid2);
-
-	points.push_back(mid3);
-	points.push_back(mid2);
-	points.push_back(point3);
-
-	points.push_back(mid1);
-	points.push_back(mid2);
-	points.push_back(mid3);
-
 	
+	if (level == 0) {
+		points.push_back(point1);
+		points.push_back(point2);
+		points.push_back(point3);
+	}
+	else {
+		vector3 mid1 = (point1 + point2) / 2.0f;
+		vector3 mid2 = (point2 + point3) / 2.0f;
+		vector3 mid3 = (point3 + point1) / 2.0f;
+
+		std::vector<vector3> newPoints;
+
+		newPoints = SubDivide(point1, mid1, mid3, level - 1);
+		points.insert(points.end(), newPoints.begin(), newPoints.end());
+
+		newPoints = SubDivide(mid1, point2, mid2, level - 1);
+		points.insert(points.end(), newPoints.begin(), newPoints.end());
+
+		newPoints = SubDivide(mid3, mid2, point3, level - 1);
+		points.insert(points.end(), newPoints.begin(), newPoints.end());
+
+		newPoints = SubDivide(mid1, mid2, mid3, level - 1);
+		points.insert(points.end(), newPoints.begin(), newPoints.end());
+	}
 	return points;
 }
