@@ -12,6 +12,8 @@ class MyPrimitive : public MyMesh
 	typedef MyMesh super;
 
 public:
+	enum Sphere {icoshpere};
+
 	/*
 	MyPrimitive
 	USAGE: Constructor
@@ -83,7 +85,7 @@ public:
 	ARGUMENTS:
 	OUTPUT: ---
 	*/
-	void GenerateSphere(float a_fRadius, int a_nSubdivisions, vector3 a_v3Color);
+	void GenerateSphere(float a_fRadius, int a_nSubdivisions, vector3 a_v3Color, Sphere type = Sphere::icoshpere);
 	/* Generates a plane shape */
 	/*
 	USAGE:
@@ -91,6 +93,13 @@ public:
 	OUTPUT: ---
 	*/
 	void GeneratePlane(float a_fSize, vector3 a_v3Color);
+	/* Generates an icosphere shape */
+	/*
+	USAGE:
+	ARGUMENTS:
+	OUTPUT: ---
+	*/
+	void GenerateIcosphere(float a_fRadius, int a_nSubdivisions);
 
 private:
 	/* Compiles the object with an specific color and name */
@@ -115,6 +124,14 @@ private:
 	OUTPUT: ---
 	*/
 	void AddTri(vector3 a_vBottomLeft, vector3 a_vBottomRight, vector3 a_vTop);
+
+	/* Takes 3 points and returns a list of smoothed points */
+	/*
+	USAGE:
+	ARGUMENTS:
+	OUTPUT: ---
+	*/
+	std::vector<vector3> MyPrimitive::Smooth(vector3 point1, vector3 point2, vector3 point3);
 };
 
 #endif //__MYPRIMITIVE_H_

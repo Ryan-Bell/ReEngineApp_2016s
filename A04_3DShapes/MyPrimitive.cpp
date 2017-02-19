@@ -221,22 +221,9 @@ void MyPrimitive::GenerateTorus(float a_fOuterRadius, float a_fInnerRadius, int 
 	Release();
 	Init();
 
-	//Your code starts here
-	float fValue = 0.5f;
-	//3--2
-	//|  |
-	//0--1
-	vector3 point0(-fValue, -fValue, fValue); //0
-	vector3 point1(fValue, -fValue, fValue); //1
-	vector3 point2(fValue, fValue, fValue); //2
-	vector3 point3(-fValue, fValue, fValue); //3
-
-	AddQuad(point0, point1, point3, point2);
-
-	//Your code ends here
 	CompileObject(a_v3Color);
 }
-void MyPrimitive::GenerateSphere(float a_fRadius, int a_nSubdivisions, vector3 a_v3Color)
+void MyPrimitive::GenerateSphere(float a_fRadius, int a_nSubdivisions, vector3 a_v3Color, Sphere type)
 {
 	//Sets minimum and maximum of subdivisions
 	if (a_nSubdivisions < 1)
@@ -250,18 +237,69 @@ void MyPrimitive::GenerateSphere(float a_fRadius, int a_nSubdivisions, vector3 a
 	Release();
 	Init();
 
-	//Your code starts here
-	float fValue = 0.5f;
-	//3--2
-	//|  |
-	//0--1
-	vector3 point0(-fValue, -fValue, fValue); //0
-	vector3 point1(fValue, -fValue, fValue); //1
-	vector3 point2(fValue, fValue, fValue); //2
-	vector3 point3(-fValue, fValue, fValue); //3
+	switch (type)
+	{
+	case MyPrimitive::icoshpere:
+		GenerateIcosphere(a_fRadius, a_nSubdivisions);
+		break;
+	default:
+		break;
+	}
 
-	AddQuad(point0, point1, point3, point2);
 
-	//Your code ends here
+
 	CompileObject(a_v3Color);
+}
+
+void MyPrimitive::GenerateIcosphere(float a_fRadius, int a_nSubdivisions) {
+
+	vector3 top(0, 0, a_fRadius);
+	vector3 bottom(0, 0, -a_fRadius);
+	vector3 b1(-a_fRadius, -a_fRadius, 0);
+	vector3 b2(-a_fRadius, a_fRadius, 0);
+	vector3 b3(a_fRadius, a_fRadius, 0);
+	vector3 b4(a_fRadius, -a_fRadius, 0);
+
+	std::vector<vector3> points = Smooth(top, b1, b2);
+	for (int i = 0; i < points.size(); i+=3) {
+		AddTri(points[i], points[(i + 1) % points.size()], points[(i + 2) % points.size()]);
+	}
+	/*
+	AddTri(b1, top, b2);
+	AddTri(b2, top, b3);
+	AddTri(b3, top, b4);
+	AddTri(b4, top, b1);
+
+	AddTri(b1, b2, bottom);
+	AddTri(b2, b3, bottom);
+	AddTri(b3, b4, bottom);
+	AddTri(b4, b1, bottom);
+	*/
+}
+
+std::vector<vector3> MyPrimitive::Smooth(vector3 point1, vector3 point2, vector3 point3) {
+	vector3 mid1 = (point1 + point2) / 2.0f;
+	vector3 mid2 = (point2 + point3) / 2.0f;
+	vector3 mid3 = (point3 + point1) / 2.0f;
+
+	std::vector<vector3> points;
+
+	points.push_back(point1);
+	points.push_back(mid1);
+	points.push_back(mid3);
+
+	points.push_back(mid1);
+	points.push_back(point2);
+	points.push_back(mid2);
+
+	points.push_back(mid3);
+	points.push_back(mid2);
+	points.push_back(point3);
+
+	points.push_back(mid1);
+	points.push_back(mid2);
+	points.push_back(mid3);
+
+	
+	return points;
 }
