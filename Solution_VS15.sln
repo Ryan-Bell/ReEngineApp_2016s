@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "01_Basics", "01_Basics\01_Basics.vcxproj", "{425ED9DA-852E-4F61-BE06-487F68A6187E}"
 EndProject
@@ -42,6 +42,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "E05_Repository", "\\banner.main.ad.rit.edu\students\rjb1928\IGMProfile\Documents\ReEngineApp_2016s\E05_Repository\E05_Repository.vcxproj.vcxproj", "{220F4955-7912-407C-9D34-371529497778}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "E06_Transformations", "E06_Transformations\E06_Transformations.vcxproj", "{450050F1-7901-465E-BA27-D04F42DABEED}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "A05_Transformations", "\\banner.main.ad.rit.edu\students\rjb1928\IGMProfile\Documents\ReEngineApp_2016s\A05_Transformations\A05_Transformations.vcxproj", "{AABA05C7-71CD-4C9B-A52F-78117CDBC72D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -101,6 +103,10 @@ Global
 		{450050F1-7901-465E-BA27-D04F42DABEED}.Debug|x86.Build.0 = Debug|Win32
 		{450050F1-7901-465E-BA27-D04F42DABEED}.Release|x86.ActiveCfg = Release|Win32
 		{450050F1-7901-465E-BA27-D04F42DABEED}.Release|x86.Build.0 = Release|Win32
+		{AABA05C7-71CD-4C9B-A52F-78117CDBC72D}.Debug|x86.ActiveCfg = Debug|Win32
+		{AABA05C7-71CD-4C9B-A52F-78117CDBC72D}.Debug|x86.Build.0 = Debug|Win32
+		{AABA05C7-71CD-4C9B-A52F-78117CDBC72D}.Release|x86.ActiveCfg = Release|Win32
+		{AABA05C7-71CD-4C9B-A52F-78117CDBC72D}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -119,5 +125,6 @@ Global
 		{D50EA787-1AD4-44AC-A230-3304FFB04F82} = {77A006BE-0096-461D-AC30-32ECAA2B3FDA}
 		{220F4955-7912-407C-9D34-371529497778} = {0B1C8EE7-E852-45B2-A546-BE37B521048A}
 		{450050F1-7901-465E-BA27-D04F42DABEED} = {0B1C8EE7-E852-45B2-A546-BE37B521048A}
+		{AABA05C7-71CD-4C9B-A52F-78117CDBC72D} = {124C8EDD-52BA-4EAA-A1F4-6D4302AB5DEC}
 	EndGlobalSection
 EndGlobal
