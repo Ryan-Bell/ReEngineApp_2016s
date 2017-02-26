@@ -48,13 +48,20 @@ void AppClass::Update(void)
 	matrix4 distanceMoon = glm::translate(2.0f, 0.0f, 0.0f);
 #pragma endregion
 
-#pragma region YOUR CODE GOES HERE
+
 	//Calculate the position of the Earth
-	m_m4Earth = glm::rotate(IDENTITY_M4, m_fEarthTimer, vector3(0.0f, 1.0f, 0.0f));
+	m_m4Earth = glm::translate(glm::vec3(m_m4Sun[3])) *
+		glm::rotate(m_fEarthTimer, vector3(0.0f, 1.0f, 0.0f)) *
+		glm::translate(vector3(11, 0, 0)) * 
+		glm::rotate(110.f , vector3(0, 0, 1)) * 
+		glm::rotate(360.f *m_fEarthTimer, vector3(1,0,0));
 
 	//Calculate the position of the Moon
-	m_m4Moon = glm::rotate(IDENTITY_M4, m_fMoonTimer, vector3(0.0f, 1.0f, 0.0f));
-#pragma endregion
+	m_m4Moon = glm::translate(glm::vec3(m_m4Earth[3])) *
+		glm::rotate(IDENTITY_M4, m_fMoonTimer / 2, vector3(0, 1, 0)) *
+		glm::translate(vector3(2, 0, 0))*
+		glm::rotate(110.f, vector3(0, 0, 1));
+
 
 #pragma region Print info
 	printf("Earth Day: %.3f, Moon Day: %.3f\r", m_fEarthTimer, m_fMoonTimer);//print the Frames per Second
