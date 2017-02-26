@@ -51,6 +51,15 @@ void AppClass::ProcessKeyboard(void)
 	ON_KEY_PRESS_RELEASE(F4, NULL, m_pCameraMngr->SetCameraMode(CAMROTHOX));
 	static bool bFPSControll = false;
 	ON_KEY_PRESS_RELEASE(F, bFPSControll = !bFPSControll, m_pCameraMngr->SetFPS(bFPSControll));
+	fSpeed = 0.1f;
+	if (bModifier)
+		fSpeed *= -1;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::X))
+		m_m4Sun *= glm::translate(fSpeed * vector3(1, 0, 0));
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Y))
+		m_m4Sun *= glm::translate(fSpeed * vector3(0, 1, 0));
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
+		m_m4Sun *= glm::translate(fSpeed * vector3(0, 0, 1));
 #pragma endregion
 }
 void AppClass::ProcessMouse(void)
