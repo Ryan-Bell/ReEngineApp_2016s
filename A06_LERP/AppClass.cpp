@@ -1,4 +1,6 @@
 #include "AppClass.h"
+#include <algorithm>
+
 void AppClass::InitWindow(String a_sWindowName)
 {
 	super::InitWindow("Assignment  06 - LERP"); // Window Name
@@ -36,7 +38,31 @@ void AppClass::Update(void)
 #pragma endregion
 
 #pragma region Your Code goes here
-	m_pMeshMngr->SetModelMatrix(IDENTITY_M4, "WallEye");
+	vector3 vecs[11] = {
+		vector3(-4.0f, -2.0f, 5.0f),
+		vector3(1.0f, -2.0f, 5.0f),
+		vector3(-3.0f, -1.0f, 3.0f),
+		vector3(2.0f, -1.0f, 3.0f),
+		vector3(-2.0f, 0.0f, 0.0f),
+		vector3(3.0f, 0.0f, 0.0f),
+		vector3(-1.0f, 1.0f, -3.0f),
+		vector3(4.0f, 1.0f, -3.0f),
+		vector3(0.0f, 2.0f, -5.0f),
+		vector3(5.0f, 2.0f, -5.0f),
+		vector3(1.0f, 3.0f, -5.0f)
+	};
+	
+	for (int i = 0; i < 11; i++) {
+		m_pMeshMngr->AddSphereToRenderList(glm::scale(glm::translate(vecs[i]), vector3(0.3f,0.3f,0.3f)));
+	}
+	static DWORD timerSinceBoot = GetTickCount();
+	float fTimer = (GetTickCount() - timerSinceBoot) / 1000.0f;
+	int currentPoint = (int)(fTimer / fDuration) % 11;
+	
+	float percent = std::fmod((fTimer / fDuration), 1.0f);
+	int nextPoint = currentPoint == 10 ? 0 : currentPoint + 1;
+	m_pMeshMngr->SetModelMatrix(glm::translate((1-percent) * vecs[currentPoint] + percent * vecs[nextPoint]), "WallEye");
+	
 #pragma endregion
 
 #pragma region Does not need changes but feel free to change anything here
@@ -51,6 +77,8 @@ void AppClass::Update(void)
 	m_pMeshMngr->PrintLine(m_pSystem->GetAppName(), REYELLOW);
 	m_pMeshMngr->Print("FPS:");
 	m_pMeshMngr->Print(std::to_string(nFPS), RERED);
+	m_pMeshMngr->Print("\nTime:");
+	m_pMeshMngr->Print(std::to_string(fTimer), RERED);
 #pragma endregion
 }
 
