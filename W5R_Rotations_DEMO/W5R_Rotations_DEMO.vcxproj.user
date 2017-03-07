@@ -4,4 +4,11 @@
     <LocalDebuggerWorkingDirectory>$(SolutionDir)_Binary</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
+<<<<<<< HEAD
+=======
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LocalDebuggerWorkingDirectory>$(SolutionDir)_Binary</LocalDebuggerWorkingDirectory>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+  </PropertyGroup>
+>>>>>>> d8eda33aa6d12cbf7e14147db00d4a8e46d8a8a7
 </Project>
