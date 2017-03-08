@@ -26,9 +26,7 @@ void AppClass::Update(void)
 
 	//Update the mesh manager's time without updating for collision detection
 	m_pMeshMngr->Update();
-#pragma region
 
-#pragma region Does not need changes but feel free to change anything here
 	//Lets us know how much time has passed since the last call
 	double fTimeSpan = m_pSystem->LapClock(); //Delta time (between frame calls)
 
@@ -57,11 +55,34 @@ void AppClass::Update(void)
 	}
 	static DWORD timerSinceBoot = GetTickCount();
 	float fTimer = (GetTickCount() - timerSinceBoot) / 1000.0f;
-	int currentPoint = (int)(fTimer / fDuration) % 11;
 	
-	float percent = std::fmod((fTimer / fDuration), 1.0f);
+#pragma region Constant Point to Point Times
+	/*
+	int currentPoint = (int)(fTimer / fDuration) % 11;
 	int nextPoint = currentPoint == 10 ? 0 : currentPoint + 1;
-	m_pMeshMngr->SetModelMatrix(glm::translate((1-percent) * vecs[currentPoint] + percent * vecs[nextPoint]), "WallEye");
+
+	float percent = std::fmod((fTimer / fDuration), 1.0f);
+	*/
+#pragma endregion
+
+#pragma region Constant Speed
+	static float myTimer = fTimer;
+	static int currentPoint = 0;
+	static int nextPoint = 1;
+
+	float speed = 4.0f;
+	float distance = glm::length(vecs[currentPoint] - vecs[nextPoint]);
+	float duration = distance / speed;
+	float percent = std::fminf((fTimer - myTimer) / duration, 1.0f);
+	if (percent == 1.0f) {
+		myTimer = fTimer;
+		currentPoint = ++currentPoint % 11;
+		percent = 0;
+	}
+	nextPoint = currentPoint == 10 ? 0 : currentPoint + 1;
+#pragma endregion
+
+	m_pMeshMngr->SetModelMatrix(glm::translate(vecs[currentPoint] + percent * (vecs[nextPoint] - vecs[currentPoint])), "WallEye");
 	
 #pragma endregion
 
