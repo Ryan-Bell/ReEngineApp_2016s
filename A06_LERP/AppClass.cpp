@@ -66,20 +66,21 @@ void AppClass::Update(void)
 #pragma endregion
 
 #pragma region Constant Speed
-	static float myTimer = fTimer;
+	static float lastPointTime = fTimer;
 	static int currentPoint = 0;
 	static int nextPoint = 1;
 
 	float speed = 4.0f;
 	float distance = glm::length(vecs[currentPoint] - vecs[nextPoint]);
-	float duration = distance / speed;
-	float percent = std::fminf((fTimer - myTimer) / duration, 1.0f);
-	if (percent == 1.0f) {
-		myTimer = fTimer;
+	float duration = distance / speed; //how long it should take to travel between the current and next point
+	float percent = (fTimer - lastPointTime) / duration; //percent (0-1) traveled between the two points
+	if (percent >= 1.0f) {
+		//next point was reached, reset time, both points, and percent
+		lastPointTime = fTimer;
 		currentPoint = ++currentPoint % 11;
+		nextPoint = currentPoint == 10 ? 0 : currentPoint + 1;
 		percent = 0;
-	}
-	nextPoint = currentPoint == 10 ? 0 : currentPoint + 1;
+	}	
 #pragma endregion
 
 	m_pMeshMngr->SetModelMatrix(glm::translate(vecs[currentPoint] + percent * (vecs[nextPoint] - vecs[currentPoint])), "WallEye");
