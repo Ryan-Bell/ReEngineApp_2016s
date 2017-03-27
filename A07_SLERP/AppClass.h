@@ -13,6 +13,10 @@ using namespace ReEng; //Using ReEng namespace to use all the classes in the dll
 class AppClass : public ReEngAppClass
 {
 	float m_fDay = 1.0f; //How much time in seconds a day lasts;
+	matrix4 m_m4Sun = IDENTITY_M4;
+	matrix4 m_m4Earth = IDENTITY_M4;
+	matrix4 m_m4Moon = IDENTITY_M4;
+
 
 public:
 	typedef ReEngAppClass super;
