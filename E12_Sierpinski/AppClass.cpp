@@ -11,20 +11,27 @@ void AppClass::InitVariables(void)
 	m_pCameraMngr->SetPositionTargetAndView(vector3(0.0f, 0.0f, 15.0f), vector3(0.0f, 0.0f, 0.0f), REAXISY);
 
 	m_pMesh = new MyMesh();
-	
-	//Creating the Mesh points
-	m_pMesh->AddVertexPosition(vector3(-1.0f, -1.0f, 0.0f));
-	m_pMesh->AddVertexColor(RERED);
-	m_pMesh->AddVertexPosition(vector3( 1.0f, -1.0f, 0.0f));
-	m_pMesh->AddVertexColor(RERED);
-	m_pMesh->AddVertexPosition(vector3(-1.0f,  1.0f, 0.0f));
-	m_pMesh->AddVertexColor(RERED);
-	m_pMesh->AddVertexPosition(vector3(-1.0f,  1.0f, 0.0f));
-	m_pMesh->AddVertexColor(REBLUE);
-	m_pMesh->AddVertexPosition(vector3(1.0f, -1.0f, 0.0f));
-	m_pMesh->AddVertexColor(REBLUE);
-	m_pMesh->AddVertexPosition(vector3( 1.0f, 1.0f, 0.0f));
-	m_pMesh->AddVertexColor(REBLUE);
+
+	std::function<void (vector3, vector3, vector3, int)> f = [&](vector3 left, vector3  right, vector3  top, int layers) {
+		if (layers > 0) {
+			vector3 v0 = (left + right) / 2.0f;
+			vector3 v1 = (left + top) / 2.0f;
+			vector3 v2 = (right + top) / 2.0f;
+
+			f(left, v0, v1, layers - 1);
+			f(top, v1, v2, layers - 1);
+			f(right, v2, v0, layers - 1);
+		}
+		else {
+			m_pMesh->AddVertexPosition(left);
+			m_pMesh->AddVertexColor(RERED);
+			m_pMesh->AddVertexPosition(right);
+			m_pMesh->AddVertexColor(REGREEN);
+			m_pMesh->AddVertexPosition(top);
+			m_pMesh->AddVertexColor(REBLUE);
+		}
+	};
+	f(vector3(-3.0f, -0.0f, 0.0f), vector3(3.0f, -0.0f, 0.0f), vector3(0.0f, 5.2f, 0.0f), 10);
 
 	//Compiling the mesh
 	m_pMesh->CompileOpenGL3X();
@@ -65,7 +72,7 @@ void AppClass::Display(void)
 	matrix4 m4Projection = m_pCameraMngr->GetProjectionMatrix();
 	matrix4 m4View = m_pCameraMngr->GetViewMatrix();
 
-	m_pMesh->Render(m4Projection, m4View, IDENTITY_M4);//Rendering nObject(s)											   //clear the screen
+	m_pMesh->Render(m4Projection, m4View, IDENTITY_M4);//Rendering nObject(s)											  
 	
 	m_pMeshMngr->Render(); //renders the render list
 	m_pMeshMngr->ClearRenderList(); //Reset the Render list after render
