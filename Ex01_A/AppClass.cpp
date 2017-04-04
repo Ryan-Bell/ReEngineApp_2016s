@@ -15,6 +15,10 @@ void AppClass::Update(void)
 
 #pragma region YOUR CODE GOES HERE
 	modelMatrix = IDENTITY_M4;
+	quaternion q1 = glm::angleAxis(0.0f, vector3(0.0f,0.0f,1.0f));
+	quaternion q2 = glm::angleAxis(180.0f, vector3(0.0f,0.0f,1.0f));
+	quaternion qmix = glm::mix(q1, q2, fTimer);
+	modelMatrix = glm::translate(vector3(0, 1.5f * sinf(fTimer * PI / 2) + 1.5, 0)) * ToMatrix4(qmix);
 #pragma endregion
 
 #pragma region DOES NOT NEED CHANGES
