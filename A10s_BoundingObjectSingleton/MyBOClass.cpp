@@ -128,7 +128,7 @@ void MyBOClass::SetModelMatrix(matrix4 a_m4ToWorld)
 
 	m_m4ToWorld = a_m4ToWorld;
 	//Calculate the vertex that makes the Object
-	vector3 v3Corner[8];
+	
 	v3Corner[0] = vector3(m_v3Min.x, m_v3Min.y, m_v3Min.z);
 	v3Corner[1] = vector3(m_v3Max.x, m_v3Min.y, m_v3Min.z);
 	v3Corner[2] = vector3(m_v3Min.x, m_v3Max.y, m_v3Min.z);
@@ -196,8 +196,26 @@ void MyBOClass::DisplayReAlligned(vector3 a_v3Color)
 	m_pMeshMngr->AddCubeToRenderList(glm::translate(IDENTITY_M4, m_v3CenterG) *
 		glm::scale(m_v3HalfWidthG * 2.0f), a_v3Color, WIRE);
 }
+void MyBOClass::DisplaySAT(vector3 normal, vector3 center) {
+
+}
 bool MyBOClass::IsColliding(MyBOClass* const a_pOther)
 {
+	if (IsCollidingSphere(a_pOther))
+		if (IsCollidingARBB(a_pOther))
+			return IsCollidingSAT(a_pOther);
+	return false;
+}
+
+bool MyBOClass::IsCollidingSphere(MyBOClass* const a_pOther) {
+	/*
+	Are they colliding?
+	For Objects we will assume they are colliding, unless at least one of the following conditions is not met
+	*/
+	//first check the bounding sphere, if that is not colliding we can guarantee that there are no collision
+	return !((m_fRadius + a_pOther->m_fRadius) < glm::distance(m_v3CenterG, a_pOther->m_v3CenterG));
+}
+bool MyBOClass::IsCollidingARBB(MyBOClass* const a_pOther) {
 	//Get all vectors in global space
 	vector3 v3Min = vector3(m_m4ToWorld * vector4(m_v3Min, 1.0f));
 	vector3 v3Max = vector3(m_m4ToWorld * vector4(m_v3Max, 1.0f));
@@ -205,13 +223,6 @@ bool MyBOClass::IsColliding(MyBOClass* const a_pOther)
 	vector3 v3MinO = vector3(a_pOther->m_m4ToWorld * vector4(a_pOther->m_v3Min, 1.0f));
 	vector3 v3MaxO = vector3(a_pOther->m_m4ToWorld * vector4(a_pOther->m_v3Max, 1.0f));
 
-	/*
-	Are they colliding?
-	For Objects we will assume they are colliding, unless at least one of the following conditions is not met
-	*/
-	//first check the bounding sphere, if that is not colliding we can guarantee that there are no collision
-	if ((m_fRadius + a_pOther->m_fRadius) < glm::distance(m_v3CenterG, a_pOther->m_v3CenterG))
-		return false;
 
 	//If the distance was smaller it might be colliding
 	//we will use the ReAligned box for the second check, notice that as long as one check return true they are 
@@ -234,6 +245,39 @@ bool MyBOClass::IsColliding(MyBOClass* const a_pOther)
 		return false;
 	else if (m_v3MinG.z > a_pOther->m_v3MaxG.z)
 		return false;
-
 	return true;
+}
+
+bool MyBOClass::CheckAxis(int p1, int p2, int p3, MyBOClass* const a_pFirst, MyBOClass* const a_pSecond, int axis) {
+	vector3 v1 = a_pFirst->v3Corner[p2] - a_pFirst->v3Corner[p1];
+	vector3 v2 = a_pFirst->v3Corner[p3] - a_pFirst->v3Corner[p2];
+	vector3 vN = glm::cross(v1, v2);
+
+
+	vector3 projectedverts1[8];
+	vector3 projectedverts2[8];
+	float min1 = 1000000;
+	float min2 = 1000000;
+	float max1 = -1000000;
+	float max2 = -1000000;
+	for (byte i = 0; i < 8; i++) {
+		projectedverts1[i] = glm::proj(a_pFirst->v3Corner[i], vN);
+		if (min1 > projectedverts1[i][axis]) min1 = projectedverts1[i][axis];
+		if (max1 < projectedverts1[i][axis]) max1 = projectedverts1[i][axis];
+		projectedverts2[i] = glm::proj(a_pSecond->v3Corner[i], vN);
+		if (min2 > projectedverts2[i][axis]) min2 = projectedverts2[i][axis];
+		if (max2 < projectedverts2[i][axis]) max2 = projectedverts2[i][axis];
+	}
+	return !(max1 < min2 || min1 > max2);
+}
+
+bool MyBOClass::IsCollidingSAT(MyBOClass* const a_pOther) {
+
+	return	CheckAxis(0, 4, 6, this, a_pOther, 0) &&
+			CheckAxis(0, 4, 5, this, a_pOther, 1) &&
+			CheckAxis(0, 1, 2, this, a_pOther, 2) &&
+
+			CheckAxis(0, 4, 6, a_pOther, this, 0) &&
+			CheckAxis(0, 4, 5, a_pOther, this, 1) &&
+			CheckAxis(0, 1, 2, a_pOther, this, 2);
 }

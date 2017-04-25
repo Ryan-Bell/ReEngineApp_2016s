@@ -19,12 +19,12 @@ void AppClass::InitVariables(void)
 
 	//Load Models
 	m_pMeshMngr->LoadModel("Minecraft\\Steve.obj", "Steve");
-	m_pMeshMngr->LoadModel("Minecraft\\Creeper.obj", "Creeper");
+	//m_pMeshMngr->LoadModel("Minecraft\\Creeper.obj", "Creeper");
 	m_pMeshMngr->LoadModel("Minecraft\\Cow.obj", "Cow");
 
 	m_pBOMngr = MyBOManager::GetInstance();
 	m_pBOMngr->AddObject(m_pMeshMngr->GetVertexList("Steve"), "Steve");
-	m_pBOMngr->AddObject(m_pMeshMngr->GetVertexList("Creeper"), "Creeper");
+	//m_pBOMngr->AddObject(m_pMeshMngr->GetVertexList("Creeper"), "Creeper");
 	m_pBOMngr->AddObject(m_pMeshMngr->GetVertexList("Cow"), "Cow");
 }
 
@@ -56,12 +56,12 @@ void AppClass::Update(void)
 
 	//Set the model matrices for both objects and Bounding Spheres
 	m_pMeshMngr->SetModelMatrix(glm::translate(m_v3O1) * ToMatrix4(m_qArcBall), "Steve");
-	m_pMeshMngr->SetModelMatrix(glm::translate(m_v3O2), "Creeper");
+	//m_pMeshMngr->SetModelMatrix(glm::translate(m_v3O2), "Creeper");
 	m_pMeshMngr->SetModelMatrix(glm::translate(m_v3O3), "Cow");
 
 	//Set the model matrix to the Bounding Object
 	m_pBOMngr->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Steve"), "Steve");
-	m_pBOMngr->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Creeper"), "Creeper");
+	//m_pBOMngr->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Creeper"), "Creeper");
 	m_pBOMngr->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Cow"), "Cow");
 
 	m_pBOMngr->Update();//Update collision detection

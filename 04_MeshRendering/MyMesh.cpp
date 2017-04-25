@@ -155,11 +155,14 @@ void MyMesh::CompileOpenGL3X(void)
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 2 * sizeof(vector3), (GLvoid*)(1 * sizeof(vector3)));
 
+	
 	if (m_uMaterialIndex < 0)
 	{
+		
 		if (m_pMatMngr->GetMaterialCount() < 1)
 		{
 			MaterialClass temp("Default");
+			
 			temp.SetDiffuse(vector3(1.0f, 0.0f, 1.0f));
 			m_uMaterialIndex = m_pMatMngr->AddMaterial(temp);
 		}
