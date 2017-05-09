@@ -1,4 +1,6 @@
 #include "MyBOClass.h"
+#include <limits>
+
 //  MyBOClass
 void MyBOClass::Init(void)
 {
@@ -248,7 +250,7 @@ bool MyBOClass::IsCollidingARBB(MyBOClass* const a_pOther) {
 	return true;
 }
 
-bool MyBOClass::CheckAxis(int p1, int p2, int p3, MyBOClass* const a_pFirst, MyBOClass* const a_pSecond, int axis) {
+bool MyBOClass::CheckAxis(int p1, int p2, int p3, MyBOClass* const a_pFirst, MyBOClass* const a_pSecond, int axis, bool debug = false) {
 	vector3 v1 = a_pFirst->v3Corner[p2] - a_pFirst->v3Corner[p1];
 	vector3 v2 = a_pFirst->v3Corner[p3] - a_pFirst->v3Corner[p2];
 	vector3 vN = glm::cross(v1, v2);
@@ -256,10 +258,10 @@ bool MyBOClass::CheckAxis(int p1, int p2, int p3, MyBOClass* const a_pFirst, MyB
 
 	vector3 projectedverts1[8];
 	vector3 projectedverts2[8];
-	float min1 = 1000000;
-	float min2 = 1000000;
-	float max1 = -1000000;
-	float max2 = -1000000;
+	float min1 = std::numeric_limits<float>::max();
+	float min2 = std::numeric_limits<float>::max();
+	float max1 = std::numeric_limits<float>::min();
+	float max2 = std::numeric_limits<float>::min();
 	for (byte i = 0; i < 8; i++) {
 		projectedverts1[i] = glm::proj(a_pFirst->v3Corner[i], vN);
 		if (min1 > projectedverts1[i][axis]) min1 = projectedverts1[i][axis];
@@ -269,6 +271,7 @@ bool MyBOClass::CheckAxis(int p1, int p2, int p3, MyBOClass* const a_pFirst, MyB
 		if (max2 < projectedverts2[i][axis]) max2 = projectedverts2[i][axis];
 	}
 	return !(max1 < min2 || min1 > max2);
+		
 }
 
 bool MyBOClass::IsCollidingSAT(MyBOClass* const a_pOther) {
