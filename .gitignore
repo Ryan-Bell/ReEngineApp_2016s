@@ -11,4 +11,5 @@ Z_DELETE/
 tr.exe.stackdump
 Solution_VS15.sdf
 *.exe
-*.exe
+.vs/
+
